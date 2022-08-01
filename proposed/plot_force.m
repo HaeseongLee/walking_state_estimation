@@ -3,15 +3,16 @@ clear all
 
 % add train dataset path
 filename = "test_29";
-addpath("~/.ros/data/"+filename)
+addpath("data/test/"+filename)
+addpath("utils/") % call custom functions
 
 hz = 2000;
 min_grf = 50;
 walking_start = 4*hz;
 step_duration = 1.1*hz;
 
-add_mean = load("model/base_walking/add_mean.mat");
-add_cov = load("model/base_walking/add_cov.mat");
+add_mean = load("model/nominal_walking/add_mean.mat");
+add_cov = load("model/nominal_walking/add_cov.mat");
 
 add_mean = add_mean.f_add_mean;
 add_cov = add_cov.f_add_cov;
