@@ -2,8 +2,9 @@ clc
 clear all
 
 % add train dataset path
-filename = "test_7";
-addpath("~/.ros/data/"+filename)
+filename = "test_29";
+addpath("data/test/"+filename)
+addpath("utils/") % call custom functions
 
 hz = 2000;
 min_grf = 50;
