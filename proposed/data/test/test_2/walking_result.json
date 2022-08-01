@@ -1,0 +1,14 @@
+{
+  "walking_result": "success",
+  "last_footstep_index": 13,
+  "number_of_foot_off": 14,
+  "disturbed_footstep_index": [
+    9,
+    10,
+    11,
+    12,
+    13
+  ],
+  "min_grf": 50,
+  "step_duration": 2200
+}
