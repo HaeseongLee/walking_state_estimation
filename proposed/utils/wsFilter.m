@@ -1,3 +1,5 @@
+% This function is for removing impulse-like estimations
+
 function ws_filtered = wsFilter(raw_ws, target_ws, buffer)
 % raw_ws : no filtered output from the discriminator
 % target_ws : a ws to be filtered

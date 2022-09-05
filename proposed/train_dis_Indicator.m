@@ -1,40 +1,49 @@
+% This script is for obtaining "Disturbance Indicator"
+
 clc
-clear 
+clear
 
-addpath("data/training/")
+% load training data
+ft_n = load("data/training/f_n_train.txt");
+ft_i = load("data/training/f_i_train.txt");
+ft_c = load("data/training/f_c_train.txt");
+ft_f = load("data/training/f_f_train.txt");
 
-% F = |F_l + F_r|
-f_add = load("f_add.txt");
+% make balanced dataset
+samples = length(ft_f);
+ft_c = datasample(ft_c, samples, Replace=false);
+ft_i = datasample(ft_i, samples, Replace=false);
+ft_n = datasample(ft_n, samples, Replace=false);
 
-% load data from nominal walking
-nominal_mean = load("data/nominal_walking/nominal_mean.mat");
-nominal_mean= nominal_mean.nominal_mean;
+ft_train = [ft_n; ft_i; ft_c; ft_f];
 
-nominal_cov = load("data/nominal_walking/nominal_cov.mat");
-nominal_cov = nominal_cov.nominal_cov;
+% add noise
+noise_1 = normrnd(0, 0.1, [length(ft_train),1]);
+noise_2 = normrnd(0, 0.1, [length(ft_train),1]);
+ft_train(:,1) = abs(ft_train(:,1) + noise_1);
+ft_train(:,2) = abs(ft_train(:,2) + noise_2);
+
+figure(1)
+cla reset
+scatter(ft_n(:,1), ft_n(:,2), 0.5, 'r')
+hold on
+scatter(ft_i(:,1), ft_i(:,2), 0.5, 'g')
+scatter(ft_c(:,1), ft_c(:,2), 0.5, 'b')
+scatter(ft_f(:,1), ft_f(:,2), 0.5, 'm')
+hold off
+grid on
 
 %%
-f_train = zeros(length(f_add),1);
-cov_inv = (nominal_cov)^-1;
-
-% compute mahalanobis distance from the nominal walking
-for i = 1:length(f_add)
-    f_train(i) = (f_add(i,:)-nominal_mean)*cov_inv*(f_add(i,:)-nominal_mean)';
-end
-f_train = sqrt(f_train);
-
+% following parameters are default values for the dis indicator
+gmm_ft = fitgmdist(ft_train, 4, 'RegularizationValue', 1e-0, ...
+    Options=statset('Display', 'final', 'MaxIter', 2000, 'TolFun', 1e-6), Replicates=10);
+disp(gmm_ft.mu)
+disp(vecnorm(gmm_ft.mu'))
 %%
-% GMM & EM algorithm
-% RegularizationValue = 1e-4 -> for simulation
-gmm_f = fitgmdist(f_train, 4, 'RegularizationValue', 1e-4, ...
-    Options=statset('Display', 'final', 'MaxIter', 2000, 'TolFun', 1e-6), Replicates=5);
-%%
-% rendering each cluster
-% change each number according to the result of fitgmdist
-DisturbanceIndicator.Fn = 2; % near zero
-DisturbanceIndicator.Fs = 4; % small
-DisturbanceIndicator.Fl = 1; % medium
-DisturbanceIndicator.Ff = 3; % large
+% TODO: change indices as referencing the fitting result
+ft_indicator.z = 1; % near zero
+ft_indicator.s = 2; % small
+ft_indicator.m = 4; % medium
+ft_indicator.l = 3; % large
 
-% plot result
-[~, ~, ~, ~] = disturbanceIndicator(f_train, gmm_f, DisturbanceIndicator, true);
+[~, ~, ~, ~] = disIndicator(ft_train, gmm_ft, ft_indicator, true);

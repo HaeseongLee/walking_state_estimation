@@ -1,7 +1,7 @@
-function [gt] = readGT(filename)
+% This function is for reading the human-labeled data
 
-    file_dir = "data/test/" + filename;
-    jsonData = jsondecode(fileread(file_dir + '/walking_result.json'));
+function [gt] = readGT(filename)
+    jsonData = jsondecode(fileread(filename + '/walking_result.json'));
     
     total_num_steps = jsonData.number_of_foot_off;
     
@@ -19,8 +19,8 @@ function [gt] = readGT(filename)
     end
        
     if jsonData.walking_result == "fail"
-       f_step_map(idx(end-1)) = 1;
-       c_step_map(idx(end)) = 1;
+       c_step_map(idx(end-1)) = 1;
+       f_step_map(idx(end)) = 1;
        % remove
        i_step_map(idx(end-1:end)) = 0;
     end
@@ -31,8 +31,8 @@ function [gt] = readGT(filename)
     
     gt(n_step_map == 1) = 0;
     gt(i_step_map == 1) = 1;
-    gt(f_step_map == 1) = 2;
-    gt(c_step_map == 1) = 3;
+    gt(c_step_map == 1) = 2;
+    gt(f_step_map == 1) = 3;
 
     gt = reshape(gt',1,[]);
     if jsonData.walking_result == "fail"
