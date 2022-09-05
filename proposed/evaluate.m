@@ -1,3 +1,5 @@
+% This script is for evaluating the proposed framework
+
 clc
 clear
 
@@ -11,13 +13,17 @@ falling_est = zeros(num_files,1);
 label = [];
 est = [];
 
+time = 0;
 for i = 1:num_files
-    filename = "test_" + i;
-    [y_true, y_pred, falling_idx, step_phase, ~] = predict(filename);
+    filename = "~/.ros/data/test_" + i;
+    [y_true, y_pred, falling_idx, step_phase, falling_index_diff] = predict(filename);
     
     label = [label; y_true];
     est = [est; y_pred];
-
+    
+    if ~isempty(falling_index_diff)
+        time = time + falling_index_diff;
+    end
     % check if the robot is fallen
     if ~isempty(find(y_true == 3, 1))
         falling_label(i) = 1;
@@ -33,7 +39,12 @@ for i = 1:num_files
     end
 end
 
+time = time/2000; % 2 kHz
+time = time/sum(falling_est);
+
 %%
+% Plot as the binary classification
+
 plot_label(falling_label==0) = "stable";
 plot_label(falling_label==1) = "falling";
 plot_est(falling_est==0) = "stable";
@@ -48,6 +59,9 @@ cm.RowSummary = 'row-normalized';
 cm.ColumnSummary = 'column-normalized';
 
 %%
+
+% Plot as the multi-lable classification
+
 plot_label(label==0) = "nominal";
 plot_label(label==1) = "disturbed";
 plot_label(label==2) = "disturbed";
