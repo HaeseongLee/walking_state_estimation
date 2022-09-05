@@ -3,11 +3,13 @@
   "last_footstep_index": 6,
   "number_of_foot_off": 7,
   "disturbed_footstep_index": [
+    2,
     3,
     4,
     5,
     6
   ],
-  "min_grf": 50,
-  "step_duration": 2200
+  "min_grf": 87.849121423045375,
+  "step_duration": 2200,
+  "end_index": 22671
 }
