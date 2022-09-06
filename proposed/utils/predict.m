@@ -14,7 +14,7 @@ ft_info = load("model/ft_indicator.mat");
 ft_model = ft_model.gmm_ft;
 ft_info = ft_info.ft_indicator;
 
-ft_nominal = load("data/nominal_walking/ft_nominal.mat");
+ft_nominal = load("../data/nominal_walking/ft_nominal.mat");
 ft_mean = ft_nominal.ft_nominal.mean;
 ft_cov = ft_nominal.ft_nominal.cov;
 

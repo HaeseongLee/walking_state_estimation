@@ -7,7 +7,7 @@ addpath("utils/")
 
 % add train dataset path
 filename = "test_11";
-addpath("~/.ros/data/"+filename)
+addpath("../data/test/"+filename)
 
 % set the basic walking paramters
 hz = 2000;
@@ -24,7 +24,7 @@ ft_model = ft_model.gmm_ft;
 ft_info = ft_info.ft_indicator;
 
 % Load nominal walking data
-ft_nominal = load("data/nominal_walking/ft_nominal.mat");
+ft_nominal = load("../data/nominal_walking/ft_nominal.mat");
 ft_mean = ft_nominal.ft_nominal.mean;
 ft_cov = ft_nominal.ft_nominal.cov;
 
