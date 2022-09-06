@@ -15,7 +15,7 @@ est = [];
 
 time = 0;
 for i = 1:num_files
-    filename = "~/.ros/data/test_" + i;
+    filename = "../data/test/test_" + i;
     [y_true, y_pred, falling_idx, step_phase, falling_index_diff] = predict(filename);
     
     label = [label; y_true];
@@ -51,6 +51,7 @@ plot_est(falling_est==0) = "stable";
 plot_est(falling_est==1) = "falling";
 
 figure(1)
+cla reset
 cm = confusionchart(plot_label, plot_est);
 sortClasses(cm, 'cluster')
 sortClasses(cm, ["falling","stable"])
@@ -72,6 +73,7 @@ plot_est(est==2) = "disturbed";
 plot_est(est==3) = "falling";
 
 figure(2)
+cla reset
 cm = confusionchart(plot_label, plot_est);
 sortClasses(cm, 'cluster')
 sortClasses(cm, ["falling","disturbed","nominal"])

@@ -1,0 +1,16 @@
+{
+  "walking_result": "fail",
+  "last_footstep_index": 7,
+  "number_of_foot_off": 8,
+  "disturbed_footstep_index": [
+    2,
+    3,
+    4,
+    5,
+    6,
+    7
+  ],
+  "min_grf": 87.849121423045375,
+  "step_duration": 2200,
+  "end_index": 23733
+}
